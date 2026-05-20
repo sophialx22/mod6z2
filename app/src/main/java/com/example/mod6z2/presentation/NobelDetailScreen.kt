@@ -1,4 +1,5 @@
-package com.example.nobelprize.presentation
+package com.example.mod6z2.presentation
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -19,6 +20,7 @@ fun NobelDetailScreen(
     viewModel: NobelDetailViewModel
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     Scaffold(
         topBar = {
             TopAppBar(

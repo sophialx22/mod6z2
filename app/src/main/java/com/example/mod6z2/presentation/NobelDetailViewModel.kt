@@ -1,7 +1,8 @@
-package com.example.nobelprize.presentation
+package com.example.mod6z2.presentation
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.nobelprize.domain.usecase.GetNobelPrizesUseCase
+import com.example.mod6z2.domain.usecase.GetNobelPrizesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,4 +1,4 @@
-package com.example.nobelprize.ui.theme
+package com.example.mod6z2.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
@@ -20,7 +20,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun NobelPrizeTheme(
+fun Mod6z2Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

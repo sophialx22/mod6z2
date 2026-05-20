@@ -1,4 +1,4 @@
-package com.example.nobelprize.presentation
+package com.example.mod6z2.presentation
 
 sealed class NobelDetailState {
     object Loading : NobelDetailState()

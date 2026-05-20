@@ -1,4 +1,5 @@
-package com.example.nobelprize
+package com.example.mod6z2
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,24 +11,32 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.nobelprize.data.api.NobelApiService
-import com.example.nobelprize.data.repository.NobelRepositoryImpl
-import com.example.nobelprize.domain.usecase.GetNobelPrizesUseCase
-import com.example.nobelprize.presentation.NobelListScreen
-import com.example.nobelprize.presentation.NobelListViewModel
-import com.example.nobelprize.presentation.NobelDetailScreen
-import com.example.nobelprize.presentation.NobelDetailViewModel
-import com.example.nobelprize.ui.theme.NobelPrizeTheme
+import com.example.mod6z2.data.api.NobelApiService
+import com.example.mod6z2.data.repository.NobelRepositoryImpl
+import com.example.mod6z2.data.storage.TokenDataStore
+import com.example.mod6z2.domain.usecase.GetNobelPrizesUseCase
+import com.example.mod6z2.domain.usecase.LoginUseCase
+import com.example.mod6z2.presentation.NobelListScreen
+import com.example.mod6z2.presentation.NobelListViewModel
+import com.example.mod6z2.presentation.NobelDetailScreen
+import com.example.mod6z2.presentation.NobelDetailViewModel
+import com.example.mod6z2.presentation.login.LoginScreen
+import com.example.mod6z2.presentation.login.LoginViewModel
+import com.example.mod6z2.ui.theme.Mod6z2Theme
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.plugins.*
-import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-
 class MainActivity : ComponentActivity() {
+
+    private lateinit var tokenDataStore: TokenDataStore
+    private lateinit var repository: NobelRepositoryImpl
+    private lateinit var getNobelPrizesUseCase: GetNobelPrizesUseCase
+    private lateinit var loginUseCase: LoginUseCase
+
     private val httpClient = HttpClient(Android) {
         install(ContentNegotiation) {
             json(Json {
@@ -43,27 +52,34 @@ class MainActivity : ComponentActivity() {
             connectTimeoutMillis = 15000
             socketTimeoutMillis = 15000
         }
-        defaultRequest {
-            header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
-            header("Accept", "application/json")
-            header("Host", "api.nobelprize.org")
-        }
     }
-    private val apiService = NobelApiService(httpClient)
-    private val repository = NobelRepositoryImpl(apiService)
-    private val getNobelPrizesUseCase = GetNobelPrizesUseCase(repository)
+    private val apiService by lazy { NobelApiService(httpClient) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tokenDataStore = TokenDataStore(applicationContext)
+        repository = NobelRepositoryImpl(apiService, tokenDataStore)
+        getNobelPrizesUseCase = GetNobelPrizesUseCase(repository)
+        loginUseCase = LoginUseCase(repository)
+
         setContent {
-            NobelPrizeTheme {
+            Mod6z2Theme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     val navController = rememberNavController()
-                    val listViewModel: NobelListViewModel = viewModel {
-                        NobelListViewModel(getNobelPrizesUseCase)
-                    }
-                    NavHost(navController = navController, startDestination = "list") {
+
+                    NavHost(navController = navController, startDestination = "login") {
+                        composable("login") {
+                            val viewModel: LoginViewModel = viewModel {
+                                LoginViewModel(loginUseCase, tokenDataStore, navController)
+                            }
+                            LoginScreen(navController = navController, viewModel = viewModel)
+                        }
                         composable("list") {
-                            NobelListScreen(navController = navController, viewModel = listViewModel)
+                            val viewModel: NobelListViewModel = viewModel {
+                                NobelListViewModel(getNobelPrizesUseCase)
+                            }
+                            NobelListScreen(navController = navController, viewModel = viewModel)
                         }
                         composable("detail/{laureateId}/{prizeYear}/{category}") { backStackEntry ->
                             val laureateId = backStackEntry.arguments?.getString("laureateId") ?: ""

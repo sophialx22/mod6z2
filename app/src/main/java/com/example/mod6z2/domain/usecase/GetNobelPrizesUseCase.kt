@@ -1,6 +1,6 @@
-package com.example.nobelprize.domain.usecase
-import com.example.nobelprize.domain.model.NobelPrize
-import com.example.nobelprize.domain.repository.NobelRepository
+package com.example.mod6z2.domain.usecase
+import com.example.mod6z2.domain.model.NobelPrize
+import com.example.mod6z2.domain.repository.NobelRepository
 
 class GetNobelPrizesUseCase(
     private val repository: NobelRepository

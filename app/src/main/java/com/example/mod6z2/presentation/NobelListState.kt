@@ -1,5 +1,6 @@
-package com.example.nobelprize.presentation
-import com.example.nobelprize.domain.model.NobelPrize
+package com.example.mod6z2.presentation
+
+import com.example.mod6z2.domain.model.NobelPrize
 
 sealed class NobelListState {
     object Loading : NobelListState()

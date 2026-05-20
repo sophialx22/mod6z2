@@ -1,4 +1,5 @@
-package com.example.nobelprize.presentation
+package com.example.mod6z2.presentation
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ fun NobelListScreen(
     var selectedYear by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = { TopAppBar(title = { Text("Нобелевские премии") }) }
     ) { paddingValues ->
@@ -28,6 +30,7 @@ fun NobelListScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            // Фильтры
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -41,6 +44,7 @@ fun NobelListScreen(
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
+
                 Box(modifier = Modifier.weight(1f)) {
                     OutlinedTextField(
                         value = when(selectedCategory) {
@@ -118,6 +122,7 @@ fun NobelListScreen(
                         )
                     }
                 }
+
                 Button(
                     onClick = {
                         viewModel.applyFilters(
@@ -129,6 +134,8 @@ fun NobelListScreen(
                     Text("Фильтр")
                 }
             }
+
+            // Список
             when (state) {
                 is NobelListState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

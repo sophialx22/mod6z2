@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.nobelprize"
+    namespace = "com.example.mod6z2"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.nobelprize"
+        applicationId = "com.example.mod6z2"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -68,6 +68,8 @@ dependencies {
     implementation("io.ktor:ktor-client-logging:2.3.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
